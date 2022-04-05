@@ -2,6 +2,7 @@ import './App.css'
 import { createContext, useState, useEffect } from 'react'
 import Board from './components/Board'
 import Keyboard from './components/Keyboard'
+import GameOver from './components/GameOver'
 import { boardDefault, generateWordSet } from './Words'
 
 export const AppContext = createContext()
@@ -15,12 +16,13 @@ function App() {
 		gameOver: false,
 		guessedWord: false,
 	})
-	const correctWord = 'RIGHT'
+	const [correctWord, setCorrectWord] = useState('')
 
 	useEffect(() => {
 		generateWordSet().then((words) => {
 			// .then because generateWordSet is an async function and returns a promise
 			setWordSet(words.wordSet) // .wordset because we are returning as object { wordSet }
+			setCorrectWord(words.todaysWord.toUpperCase()) // today's Word
 		})
 	}, [])
 
@@ -47,7 +49,18 @@ function App() {
 		}
 
 		if (currWord === correctWord) {
-			alert('Game Ended')
+			setGameOver({
+				gameOver: true,
+				guessedWord: true,
+			})
+			return
+		}
+
+		if (currAttempt.attempt === 5) {
+			setGameOver({
+				gameOver: true,
+				guessedWord: false,
+			})
 		}
 	}
 	const onDelete = () => {
@@ -79,7 +92,7 @@ function App() {
 				}}>
 				<div className='game'>
 					<Board />
-					<Keyboard />
+					{gameOver.gameOver ? <GameOver /> : <Keyboard />}
 				</div>
 			</AppContext.Provider>
 		</div>
