@@ -5,6 +5,9 @@ import Keyboard from './components/Keyboard'
 import GameOver from './components/GameOver'
 import { boardDefault, generateWordSet } from './Words'
 
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 export const AppContext = createContext()
 
 function App() {
@@ -45,7 +48,7 @@ function App() {
 			// .has fxn in JS for sets
 			setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 }) //next row first position
 		} else {
-			alert('Not A Word')
+			toast.error('Not A Word')
 		}
 
 		if (currWord === correctWord) {
@@ -95,6 +98,7 @@ function App() {
 					{gameOver.gameOver ? <GameOver /> : <Keyboard />}
 				</div>
 			</AppContext.Provider>
+			<ToastContainer />
 		</div>
 	)
 }
