@@ -1,5 +1,4 @@
 import Letter from './Letter'
-import { AppContext } from '../App'
 
 function Board() {
 	return (
